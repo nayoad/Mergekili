@@ -19,10 +19,10 @@ local ResourceInfo = ns.ResourceInfo or {}
 -- Atlas/Textures
 local AtlasToString, GetAtlasFile, GetAtlasCoords = ns.AtlasToString, ns.GetAtlasFile, ns.GetAtlasCoords
 
-local IsPassiveSpell = C_Spell.IsSpellPassive or _G.IsPassiveSpell
-local IsHarmfulSpell = C_Spell.IsSpellHarmful or _G.IsHarmfulSpell
-local IsHelpfulSpell = C_Spell.IsSpellHelpful or _G.IsHelpfulSpell
-local IsPressHoldReleaseSpell = C_Spell.IsPressHoldReleaseSpell or _G.IsPressHoldReleaseSpell
+local IsPassiveSpell = ns.BCDM_IsSpellPassive
+local IsHarmfulSpell = ns.BCDM_IsSpellHarmful
+local IsHelpfulSpell = ns.BCDM_IsSpellHelpful
+local IsPressHoldReleaseSpell = ns.BCDM_IsPressHoldReleaseSpell
 local GetSpellBookItemInfo = function( index, bookType )
     local spellBank = ( bookType == "spell" or bookType == Enum.SpellBookItemType.Spell ) and Enum.SpellBookSpellBank.Player or Enum.SpellBookSpellBank.Pet
     local info = C_SpellBook.GetSpellBookItemInfo(index, spellBank)
@@ -55,7 +55,7 @@ local GetSpellCooldown = function( spellID )
     return ns.BCDM_GetSpellCooldown( spellID )
 end
 
-local GetSpellDescription = C_Spell.GetSpellDescription
+local GetSpellDescription = ns.BCDM_GetSpellDescription
 
 local GetSpellCharges = function( spellID )
     return ns.BCDM_GetSpellCharges( spellID )
@@ -845,7 +845,7 @@ function SkeletonGen:EmbedSpellData( spellID, token, ability )
     end
 
     local cost, spendPerSec, resource
-    local costs = C_Spell.GetSpellPowerCost( spellID )
+    local costs = ns.BCDM_GetSpellPowerCost( spellID )
 
     if costs then
         for _, v in ipairs( costs ) do
@@ -941,8 +941,8 @@ function SkeletonGen:Generate()
 
     -- WoW API locals (all uncommented)
     self:Append( "-- Common WoW APIs, comment out unneeded per-spec" )
-    self:Append( "local GetSpellCastCount = C_Spell.GetSpellCastCount" )
-    self:Append( "local GetSpellInfo = C_Spell.GetSpellInfo" )
+    self:Append( "local GetSpellCastCount = ns.BCDM_GetSpellCastCount" )
+    self:Append( "local GetSpellInfo = ns.BCDM_GetSpellInfo" )
     self:Append( "local GetSpellInfo = ns.GetUnpackedSpellInfo" )
     self:Append( "local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID" )
     self:Append( "local FindUnitBuffByID, FindUnitDebuffByID = ns.FindUnitBuffByID, ns.FindUnitDebuffByID" )

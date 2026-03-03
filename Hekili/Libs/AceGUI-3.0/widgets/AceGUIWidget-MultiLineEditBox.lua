@@ -107,7 +107,8 @@ local function OnReceiveDrag(self)                                              
 	local type, id, info, extra = GetCursorInfo()
 	if type == "spell" then
 		if C_Spell and C_Spell.GetSpellName then
-			info = C_Spell.GetSpellName(extra)
+			local ok, val = pcall(C_Spell.GetSpellName, extra)
+			if ok then info = val end
 		else
 			info = GetSpellInfo(id, info)
 		end

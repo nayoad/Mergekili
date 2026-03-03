@@ -58,7 +58,7 @@ local UnitBuff, UnitDebuff = ns.UnitBuff, ns.UnitDebuff
 local UnitBuffByID, UnitDebuffByID = ns.UnitBuffByID, ns.UnitDebuffByID
 
 local GetItemInfo = C_Item.GetItemInfo
-local GetSpellInfo = C_Spell.GetSpellInfo
+local GetSpellInfo = ns.BCDM_GetSpellInfo
 
 local errors = {}
 local eIndex = {}

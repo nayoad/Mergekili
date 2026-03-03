@@ -19,7 +19,7 @@ local insert, remove, sort, wipe = table.insert, table.remove, table.sort, table
 local abs, ceil, floor, max, sqrt = math.abs, math.ceil, math.floor, math.max, math.sqrt
 
 -- Common WoW APIs, comment out unneeded per-spec
-local GetSpellCastCount = C_Spell.GetSpellCastCount
+local GetSpellCastCount = ns.BCDM_GetSpellCastCount
 -- local GetSpellInfo = C_Spell.GetSpellInfo
 -- local GetSpellInfo = ns.GetUnpackedSpellInfo
 -- local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID

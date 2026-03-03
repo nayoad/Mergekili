@@ -282,7 +282,7 @@ do
     end
 
     function Hekili:ContinueOnSpellLoad( spellID, func )
-        if C_Spell.IsSpellDataCached( spellID ) then
+        if ns.BCDM_IsSpellDataCached( spellID ) then
             func( true )
             return
         end
@@ -296,7 +296,7 @@ do
             isUnregistered = false
         end
 
-        C_Spell.RequestLoadSpellData( spellID )
+        ns.BCDM_RequestLoadSpellData( spellID )
     end
 
     function Hekili:RunSpellCallbacks()

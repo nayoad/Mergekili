@@ -35,7 +35,7 @@ local ClassColor = C_ClassColor.GetClassColor( class.file )
 
 local GetSpellInfo = ns.GetUnpackedSpellInfo
 
-local GetSpellDescription = C_Spell.GetSpellDescription
+local GetSpellDescription = ns.BCDM_GetSpellDescription
 
 local GetSpecialization = C_SpecializationInfo.GetSpecialization
 local GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo

@@ -43,17 +43,23 @@ if C_Spell.IsSpellInRange then
 	-- 	Templar's Verdict (base) & Final Verdict (ret pally talent), talent has longer range than base
 	--	Growl (hunter pet) - pet spell with range.
 
-	local IsSpellInRange = C_Spell.IsSpellInRange
-	local SpellHasRange = C_Spell.SpellHasRange
+	local _IsSpellInRange = C_Spell.IsSpellInRange
+	local _SpellHasRange = C_Spell.SpellHasRange
 
 	function Lib.IsSpellInRange(spellInput, unit)
-		local result = IsSpellInRange(spellInput, unit)
-		return result and 1 or result == false and 0 or result
+		local ok, result = pcall(_IsSpellInRange, spellInput, unit)
+		if ok then
+			return result and 1 or result == false and 0 or result
+		end
+		return nil
 	end
 
 	function Lib.SpellHasRange(spellInput)
-		local result = SpellHasRange(spellInput)
-		return result and 1 or result == false and 0 or result
+		local ok, result = pcall(_SpellHasRange, spellInput)
+		if ok then
+			return result and 1 or result == false and 0 or result
+		end
+		return nil
 	end
 
 	return
@@ -62,8 +68,8 @@ end
 
 local GetSpellBookItemInfo = _G.GetSpellBookItemInfo or _G.C_SpellBook.GetSpellBookItemType
 local GetSpellBookItemName = _G.GetSpellBookItemName or _G.C_SpellBook.GetSpellBookItemName
-local GetSpellLink = _G.GetSpellLink or _G.C_Spell.GetSpellLink
-local GetSpellName = _G.GetSpellInfo or _G.C_Spell.GetSpellName
+local GetSpellLink = _G.GetSpellLink or function(id) local ok, v = pcall(_G.C_Spell.GetSpellLink, id); if ok then return v end end
+local GetSpellName = _G.GetSpellInfo or function(id) local ok, v = pcall(_G.C_Spell.GetSpellName, id); if ok then return v end end
 
 local IsSpellInRange = _G.IsSpellInRange
 local IsSpellBookItemInRange = _G.IsSpellInRange or function(index, spellBank, unit)

@@ -86,7 +86,8 @@ local function EditBox_OnReceiveDrag(frame)
 		name = info
 	elseif type == "spell" then
 		if C_Spell and C_Spell.GetSpellName then
-			name = C_Spell.GetSpellName(extra)
+			local ok, val = pcall(C_Spell.GetSpellName, extra)
+			if ok then name = val end
 		else
 			name = GetSpellInfo(id, info)
 		end

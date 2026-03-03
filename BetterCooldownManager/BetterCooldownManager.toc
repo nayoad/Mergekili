@@ -1,0 +1,23 @@
+## Title: |cFF8080FFBetter|rCooldownManager
+## Interface: 120000, 120001
+## Version: V12.0.24
+## Author: |cFF8080FFUnhalted|r
+## Notes: |cFF8080FFBetter|rCooldownManager is an all-in-one AddOn that provides additional customization to the Cooldown Manager, developed by |cFF8080FFUnhalted|r
+## SavedVariables: BCDMDB
+## Category-enUS: |cFF8080FFUnhalted|r Development
+## IconTexture: Interface\AddOns\BetterCooldownManager\Media\Logo.png
+## X-Curse-Project-ID: 1435851
+## X-Wago-ID: ANz030K4
+
+# Load Libraries
+Libraries/Init.xml
+
+# Load Locales
+Locales/enUS.lua
+Locales/koKR.lua
+
+# Load Modules
+Modules/Init.xml
+
+# Load Core
+Core/Init.xml

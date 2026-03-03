@@ -1,8 +1,8 @@
 -- BetterCooldownManagerBridge.lua
 -- Bridge layer that routes ALL of Hekili's C_Spell queries through
 -- BetterCooldownManager's SpellState API when available, and wraps every
--- fallback Blizzard call in pcall so that locked / restricted APIs in
--- Midnight 12.x never taint the addon.
+-- fallback Blizzard call in pcall so that blocked / restricted APIs in
+-- Midnight 12.x never crash the addon.
 --
 -- Loaded early in the Hekili TOC so that every other file can reference
 -- ns.BCDM_* helpers instead of calling C_Spell.* directly.
@@ -91,8 +91,9 @@ end
 -- ---------------------------------------------------------------------------
 ns.BCDM_GetSpellCooldownRaw = function(spellID)
     if IsBCDMAvailable() then
-        local ok, rawInfo = pcall(C_Spell.GetSpellCooldown, spellID)
-        if not ok or not rawInfo then rawInfo = {} end
+        local rawInfo = {}
+        local ok, result = pcall(C_Spell.GetSpellCooldown, spellID)
+        if ok and result then rawInfo = result end
         local startTime, duration, isEnabled, modRate = BCDMG:GetSpellCooldown(spellID)
         rawInfo.startTime = startTime
         rawInfo.duration  = duration

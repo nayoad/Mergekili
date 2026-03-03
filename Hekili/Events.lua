@@ -2007,6 +2007,16 @@ Hekili:ProfileCPU( "CLEU_HANDLER", CLEU_HANDLER )
 RegisterEvent( "COMBAT_LOG_EVENT_UNFILTERED", function ( event ) CLEU_HANDLER( event, CombatLogGetCurrentEventInfo() ) end )
 
 
+-- ---------------------------------------------------------------------------
+-- Addon Restriction State (12.0.0+)
+-- When Blizzard changes the addon restriction state, force a full update
+-- so that Hekili re-evaluates all cooldown / state data.
+-- ---------------------------------------------------------------------------
+RegisterEvent( "ADDON_RESTRICTION_STATE_CHANGED", function()
+    Hekili:ForceUpdate( "ADDON_RESTRICTION_STATE_CHANGED" )
+end )
+
+
 do
     local function UNIT_COMBAT( event, unit, action, _, amount )
         if amount > 0 and action == 'HEAL' then

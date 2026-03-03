@@ -19,17 +19,14 @@ local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local GetItemSpell = C_Item.GetItemSpell
 local GetItemCooldown = C_Item.GetItemCooldown
 local IsUsableItem = C_Item.IsUsableItem
-local GetSpellInfo, GetSpellCharges, GetSpellLossOfControlCooldown = ns.GetUnpackedSpellInfo, C_Spell.GetSpellCharges, C_Spell.GetSpellLossOfControlCooldown
+local GetSpellInfo, GetSpellCharges, GetSpellLossOfControlCooldown = ns.GetUnpackedSpellInfo, ns.BCDM_GetSpellCharges, ns.BCDM_GetSpellLossOfControlCooldown
 local UnitBuff, UnitDebuff = ns.UnitBuff, ns.UnitDebuff
 
 local GetBuffDataByIndex, GetDebuffDataByIndex = C_UnitAuras.GetBuffDataByIndex, C_UnitAuras.GetDebuffDataByIndex
 local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local GetSpellCharges = function(spellID)
-    local spellChargeInfo = GetSpellCharges(spellID);
-    if spellChargeInfo then
-        return spellChargeInfo.currentCharges, spellChargeInfo.maxCharges, spellChargeInfo.cooldownStartTime, spellChargeInfo.cooldownDuration, spellChargeInfo.chargeModRate;
-    end
+    return ns.BCDM_GetSpellCharges(spellID)
 end
 local FindPlayerAuraByID, IsAbilityDisabled, IsDisabledCovenantSpell = ns.FindPlayerAuraByID, ns.IsAbilityDisabled, ns.IsDisabledCovenantSpell
 
@@ -760,7 +757,7 @@ state.IsPlayerSpell = C_SpellBook.IsSpellKnown
 state.IsSpellKnown = C_SpellBook.IsSpellInSpellBook
 state.IsSpellKnownOrOverridesKnown = C_SpellBook.IsSpellInSpellBook
 state.IsUsableItem = C_Item.IsUsableItem
-state.IsUsableSpell = C_Spell.IsSpellUsable
+state.IsUsableSpell = ns.BCDM_IsSpellUsable
 state.UnitAura = UnitAura
 state.UnitAuraSlots = C_UnitAuras.GetAuraSlots
 state.UnitBuff = UnitBuff
@@ -3273,10 +3270,7 @@ do
     }
 
     local function GetUnpackedSpellCooldown( spellID )
-        local spellCooldownInfo = C_Spell.GetSpellCooldown( spellID );
-        if spellCooldownInfo then
-            return spellCooldownInfo.startTime, spellCooldownInfo.duration, spellCooldownInfo.isEnabled, spellCooldownInfo.modRate;
-        end
+        return ns.BCDM_GetSpellCooldown( spellID )
     end
 
     -- Table of default handlers for specific ability cooldowns.

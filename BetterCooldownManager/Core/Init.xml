@@ -4,6 +4,7 @@
     <Script file="GUI.lua"/>
     <Script file="EventManager.lua"/>
     <Script file="Share.lua"/>
+    <Script file="SpellStateAPI.lua"/>
     <Script file="API.lua"/>
     <Script file="Core.lua"/>
 </Ui>

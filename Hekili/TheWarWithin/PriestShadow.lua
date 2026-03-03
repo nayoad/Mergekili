@@ -30,7 +30,7 @@ local IsActiveSpell = ns.IsActiveSpell
 
 -- Specialization-specific local functions (if any)
 local min = ns.safeMin
-local GetSpellCooldown = C_Spell.GetSpellCooldown
+local GetSpellCooldown = ns.BCDM_GetSpellCooldownRaw
 
 spec:RegisterResource( Enum.PowerType.Insanity, {
     mind_flay = {

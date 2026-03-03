@@ -31,7 +31,7 @@ local IsSpellKnownOrOverridesKnown = C_SpellBook.IsSpellInSpellBook
 -- local IsActiveSpell = ns.IsActiveSpell
 
 -- Specialization-specific local functions (if any)
-local GetSpellCooldown = C_Spell.GetSpellCooldown
+local GetSpellCooldown = ns.BCDM_GetSpellCooldownRaw
 
 spec:RegisterResource( Enum.PowerType.HolyPower )
 spec:RegisterResource( Enum.PowerType.Mana )

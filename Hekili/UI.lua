@@ -24,15 +24,11 @@ local IsCurrentSpell = C_Spell.IsCurrentSpell
 local GetItemCooldown = C_Item.GetItemCooldown
 local GetItemInfoInstant = C_Item.GetItemInfoInstant
 local GetSpellTexture = C_Spell.GetSpellTexture
-local IsUsableSpell = C_Spell.IsSpellUsable
+local IsUsableSpell = ns.BCDM_IsSpellUsable
 local IsSpellOverlayed = C_SpellActivationOverlay.IsSpellOverlayed
 
 local GetSpellCooldown = function( spellID )
-    local spellCooldownInfo = C_Spell.GetSpellCooldown( spellID )
-    if spellCooldownInfo then
-        return spellCooldownInfo.startTime, spellCooldownInfo.duration, spellCooldownInfo.isEnabled, spellCooldownInfo.modRate
-    end
-    return 0, 0, false, 0
+    return ns.BCDM_GetSpellCooldown( spellID )
 end
 
 local GetSpecialization = C_SpecializationInfo.GetSpecialization

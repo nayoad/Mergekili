@@ -13,7 +13,7 @@ local GetItemCooldown = C_Item.GetItemCooldown
 local GetItemCount = C_Item.GetItemCount
 local IsUsableItem = C_Item.IsUsableItem
 local GetItemInfo = C_Item.GetItemInfo
-local IsUsableSpell = C_Spell.IsSpellUsable
+local IsUsableSpell = ns.BCDM_IsSpellUsable
 local AreCovenantsDisabled = ns.AreCovenantsDisabled
 
 -- Covenants

@@ -25,10 +25,7 @@ local GetTalentInfo = C_SpecializationInfo.GetTalentInfo
 local GetSpecialization= C_SpecializationInfo.GetSpecialization
 local GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo
 local GetSpellCooldown = function(spellID)
-    local spellCooldownInfo = C_Spell.GetSpellCooldown(spellID);
-    if spellCooldownInfo then
-        return spellCooldownInfo.startTime, spellCooldownInfo.duration, spellCooldownInfo.isEnabled, spellCooldownInfo.modRate;
-    end
+    return ns.BCDM_GetSpellCooldown(spellID)
 end
 
 local GetSpellInfo = ns.GetUnpackedSpellInfo

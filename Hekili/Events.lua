@@ -344,34 +344,28 @@ end )
 
 
 do
-    if Hekili.IsWrath() then
-        RegisterEvent( "ACTIVE_TALENT_GROUP_CHANGED", function()
-            Hekili:SpecializationChanged()
-        end )
-    else
-        local specializationEvents = {
-            ACTIVE_PLAYER_SPECIALIZATION_CHANGED = 1,
-            ACTIVE_TALENT_GROUP_CHANGED = 1,
-            CONFIRM_TALENT_WIPE = 1,
-            PLAYER_TALENT_UPDATE = 1,
-            SPEC_INVOLUNTARILY_CHANGED = 1,
-            TALENTS_INVOLUNTARILY_RESET = 1
-        }
+    local specializationEvents = {
+        ACTIVE_PLAYER_SPECIALIZATION_CHANGED = 1,
+        ACTIVE_TALENT_GROUP_CHANGED = 1,
+        CONFIRM_TALENT_WIPE = 1,
+        PLAYER_TALENT_UPDATE = 1,
+        SPEC_INVOLUNTARILY_CHANGED = 1,
+        TALENTS_INVOLUNTARILY_RESET = 1
+    }
 
-        local function CheckForTalentUpdate( event )
-            local specialization = GetSpecialization()
-            local specID = specialization and GetSpecializationInfo( specialization )
+    local function CheckForTalentUpdate( event )
+        local specialization = GetSpecialization()
+        local specID = specialization and GetSpecializationInfo( specialization )
 
-            if specID and specID ~= state.spec.id then
-                Hekili.PendingSpecializationChange = true
-            end
+        if specID and specID ~= state.spec.id then
+            Hekili.PendingSpecializationChange = true
         end
+    end
 
-        RegisterEvent( "ACTIVE_PLAYER_SPECIALIZATION_CHANGED", CheckForTalentUpdate )
+    RegisterEvent( "ACTIVE_PLAYER_SPECIALIZATION_CHANGED", CheckForTalentUpdate )
 
-        for event in pairs( specializationEvents ) do
-            RegisterEvent( event, CheckForTalentUpdate )
-        end
+    for event in pairs( specializationEvents ) do
+        RegisterEvent( event, CheckForTalentUpdate )
     end
 end
 
@@ -690,7 +684,7 @@ do
     end
 
     local wasWearing = {}
-    local maxItemSlot = Hekili.IsWrath() and INVSLOT_LAST_EQUIPPED or Enum.ItemSlotFilterTypeMeta.MaxValue
+    local maxItemSlot = Enum.ItemSlotFilterTypeMeta.MaxValue
 
     local timer
 
@@ -2569,12 +2563,8 @@ RegisterEvent( "ACTIONBAR_HIDEGRID", DelayedUpdateKeybindings )
 -- RegisterEvent( "ACTIONBAR_PAGE_CHANGED", DelayedUpdateKeybindings )
 -- RegisterEvent( "UPDATE_SHAPESHIFT_FORM", DelayedUpdateKeybindings )
 
-if Hekili.IsWrath() then
-    RegisterEvent( "ACTIVE_TALENT_GROUP_CHANGED", DelayedUpdateKeybindings )
-else
-    RegisterEvent( "ACTIVE_PLAYER_SPECIALIZATION_CHANGED", DelayedUpdateKeybindings )
-    RegisterEvent( "TRAIT_CONFIG_UPDATED", DelayedUpdateKeybindings )
-end
+RegisterEvent( "ACTIVE_PLAYER_SPECIALIZATION_CHANGED", DelayedUpdateKeybindings )
+RegisterEvent( "TRAIT_CONFIG_UPDATED", DelayedUpdateKeybindings )
 
 
 

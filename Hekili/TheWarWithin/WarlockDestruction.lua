@@ -19,9 +19,9 @@ local insert, remove, sort, wipe = table.insert, table.remove, table.sort, table
 local abs, ceil, floor, max, sqrt = math.abs, math.ceil, math.floor, math.max, math.sqrt
 
 -- Common WoW APIs, comment out unneeded per-spec
-local GetSpellCastCount = C_Spell.GetSpellCastCount
+local GetSpellCastCount = ns.BCDM_GetSpellCastCount
 -- local GetSpellCastCount = C_Spell.GetSpellCastCount
-local GetSpellInfo = C_Spell.GetSpellInfo
+local GetSpellInfo = ns.BCDM_GetSpellInfo
 -- local GetSpellInfo = ns.GetUnpackedSpellInfo
 -- local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local FindUnitBuffByID, FindUnitDebuffByID = ns.FindUnitBuffByID, ns.FindUnitDebuffByID
@@ -30,7 +30,7 @@ local IsSpellKnownOrOverridesKnown = C_SpellBook.IsSpellInSpellBook
 local IsActiveSpell = ns.IsActiveSpell
 
 -- Specialization-specific local functions (if any)
-local GetSpellTexture = C_Spell.GetSpellTexture
+local GetSpellTexture = ns.BCDM_GetSpellTexture
 local Glyphed = C_SpellBook.IsSpellInSpellBook
 
 spec:RegisterResource( Enum.PowerType.SoulShards, {

@@ -1,5 +1,5 @@
-## Interface: 110205
-## Version: v11.2.5-1.0.0
+## Interface: 120100
+## Version: v12.1.0-1.0.0
 ## Title: Hekili
 ## Author: Hekili
 ## IconTexture: Interface\AddOns\Hekili\Textures\LOGO-ORANGE.blp
@@ -22,24 +22,6 @@ State.lua
 Events.lua
 
 Classes.lua
-
-TheBurningCrusade\Items.lua
-Wrath\Items.lua
-Cataclysm\Items.lua
-Legion\Items.lua
-
-BfA\AzeritePowers.lua
-BfA\Essences.lua
-BfA\Items.lua
-
-Shadowlands\AnimaPowers.lua
-Shadowlands\Covenants.lua
-Shadowlands\SoulbindConduits.lua
-Shadowlands\Trinkets.lua
-Shadowlands\Legendaries.lua
-
-Dragonflight\Items.lua
-Dragonflight\Classes.lua
 
 TheWarWithin\Items.lua
 

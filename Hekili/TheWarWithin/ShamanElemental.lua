@@ -30,7 +30,7 @@ local FindUnitBuffByID, FindUnitDebuffByID = ns.FindUnitBuffByID, ns.FindUnitDeb
 
 -- Specialization-specific local functions (if any)
 local GetWeaponEnchantInfo = GetWeaponEnchantInfo
-local GetSpellPowerCost = C_Spell.GetSpellPowerCost
+local GetSpellPowerCost = ns.BCDM_GetSpellPowerCost
 spec:RegisterResource( Enum.PowerType.Maelstrom )
 spec:RegisterResource( Enum.PowerType.Mana )
 

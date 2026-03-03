@@ -21,7 +21,7 @@ local abs, ceil, floor, max, sqrt = math.abs, math.ceil, math.floor, math.max, m
 -- Common WoW APIs, comment out unneeded per-spec
 local After = C_Timer.After
 local FindUnitBuffByID, FindUnitDebuffByID = ns.FindUnitBuffByID, ns.FindUnitDebuffByID
-local GetSpellCastCount = C_Spell.GetSpellCastCount
+local GetSpellCastCount = ns.BCDM_GetSpellCastCount
 -- local GetSpellInfo = C_Spell.GetSpellInfo
 local GetSpellInfo = ns.GetUnpackedSpellInfo
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID

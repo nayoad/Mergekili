@@ -24,33 +24,17 @@ end
 Hekili.AllowSimCImports = true
 
 Hekili.IsRetail = function()
-    return Hekili.Flavor == "Retail"
-end
-
-Hekili.IsWrath = function()
-    return Hekili.Flavor == "Wrath"
-end
-
-Hekili.IsClassic = function()
-    return Hekili.IsWrath()
-end
-
-Hekili.IsDragonflight = function()
-    return buildNum >= 100000
-end
-
-Hekili.IsTWW = function()
-    return buildNum >= 110000
+    return true
 end
 
 Hekili.IsMidnight = function()
     return buildNum >= 120000
 end
 
-Hekili.BuiltFor = 110200
+Hekili.BuiltFor = 120100
 Hekili.GameBuild = buildStr
 
-ns.PTR = buildNum > 110200
+ns.PTR = buildNum > 120100
 Hekili.IsPTR = ns.PTR
 
 ns.Patrons = "|cFFFFD100Current Status|r\n\n"

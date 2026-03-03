@@ -5,7 +5,7 @@ if Build < (MinBuild or 0) or ( (OverBuild or 0) > 0 and Build >= OverBuild ) th
 local AddonName, a = ...
 a.AddonName = AddonName
 local AddonTitle = select(2, C_AddOns.GetAddOnInfo(AddonName))
-local GetSpellSubtext = C_Spell.GetSpellSubtext
+local GetSpellSubtext = function(id) local ok, v = pcall(C_Spell.GetSpellSubtext, id); if ok then return v end end
 local PlainAddonTitle = AddonTitle:gsub("|c........", ""):gsub("|r", "")
 local L = a.Localize
 function a.print(...)
@@ -47,7 +47,8 @@ SpellFlashCore.RegisterBigLibTimer(a)
 
 local EmptyTable = {}
 
-local GetSpellInfo, GetSpellSubtext = C_Spell.GetSpellInfo, C_Spell.GetSpellSubtext
+local GetSpellInfo = function(id) local ok, v = pcall(C_Spell.GetSpellInfo, id); if ok then return v end end
+local GetSpellSubtext = function(id) local ok, v = pcall(C_Spell.GetSpellSubtext, id); if ok then return v end end
 
 local ItemCache = setmetatable({}, {__index = function(t, v) if C_Item.GetItemInfo(v) then t[v] = {C_Item.GetItemInfo(v)} return t[v] end return EmptyTable end})
 function SpellFlashCore.GetItemInfo(id)

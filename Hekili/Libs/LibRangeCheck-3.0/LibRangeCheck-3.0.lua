@@ -77,11 +77,13 @@ local UnitGUID = UnitGUID
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local CheckInteractDistance = CheckInteractDistance
 local IsSpellBookItemInRange = _G.IsSpellInRange or function(index, spellBank, unit)
-  local result = C_Spell.IsSpellInRange(index, unit)
-  if result == true then
-    return 1
-  elseif result == false then
-    return 0
+  local ok, result = pcall(C_Spell.IsSpellInRange, index, unit)
+  if ok then
+    if result == true then
+      return 1
+    elseif result == false then
+      return 0
+    end
   end
   return nil
 end
@@ -109,8 +111,8 @@ local GetSpellInfo = GetSpellInfo or function(spellID)
     return nil;
   end
 
-  local spellInfo = C_Spell.GetSpellInfo(spellID);
-  if spellInfo then
+  local ok, spellInfo = pcall(C_Spell.GetSpellInfo, spellID);
+  if ok and spellInfo then
     return spellInfo.name, nil, spellInfo.iconID, spellInfo.castTime, spellInfo.minRange, spellInfo.maxRange, spellInfo.spellID, spellInfo.originalIconID;
   end
 end

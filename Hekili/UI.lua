@@ -20,10 +20,10 @@ local round = ns.round
 
 local IsCurrentItem = C_Item.IsCurrentItem
 local IsUsableItem = C_Item.IsUsableItem
-local IsCurrentSpell = C_Spell.IsCurrentSpell
+local IsCurrentSpell = ns.BCDM_IsCurrentSpell
 local GetItemCooldown = C_Item.GetItemCooldown
 local GetItemInfoInstant = C_Item.GetItemInfoInstant
-local GetSpellTexture = C_Spell.GetSpellTexture
+local GetSpellTexture = ns.BCDM_GetSpellTexture
 local IsUsableSpell = ns.BCDM_IsSpellUsable
 local IsSpellOverlayed = C_SpellActivationOverlay.IsSpellOverlayed
 
@@ -861,11 +861,8 @@ do
         end
 
         local use = list or menuData
-        local classic = Hekili.IsClassic()
 
         for i, data in ipairs( use ) do
-            data.classicChecks = classic
-
             if not data.hidden or ( type( data.hidden ) == 'function' and not data.hidden() ) then
                 if data.isSeparator then
                     menu.AddSeparator( level )

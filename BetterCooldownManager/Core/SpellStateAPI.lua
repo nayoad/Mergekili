@@ -11,11 +11,53 @@ local _, BCDM = ...
 local spellStateCache = {}
 local gcdState = { startTime = 0, duration = 0, isEnabled = true, modRate = 1 }
 local GCD_SPELL_ID = 61304
+local addonRestricted = false
+
+-- ---------------------------------------------------------------------------
+-- 12.0.0 Secret Values & Restriction helpers
+-- ---------------------------------------------------------------------------
+local function IsSpellCooldownSecret(spellID)
+    if C_Secrets and C_Secrets.ShouldSpellCooldownBeSecret then
+        local ok, secret = pcall(C_Secrets.ShouldSpellCooldownBeSecret, spellID)
+        if ok then return secret end
+    end
+    return false
+end
+
+local function AreCooldownsSecret()
+    if C_Secrets and C_Secrets.ShouldCooldownsBeSecret then
+        local ok, secret = pcall(C_Secrets.ShouldCooldownsBeSecret)
+        if ok then return secret end
+    end
+    return false
+end
+
+local function IsValueSecret(value)
+    if issecretvalue then
+        local ok, secret = pcall(issecretvalue, value)
+        if ok then return secret end
+    end
+    return false
+end
+
+local function UpdateRestrictionState()
+    if C_RestrictedActions and C_RestrictedActions.IsAddOnRestrictionActive then
+        local ok, active = pcall(C_RestrictedActions.IsAddOnRestrictionActive)
+        if ok then
+            addonRestricted = active
+            return
+        end
+    end
+    addonRestricted = false
+end
 
 -- ---------------------------------------------------------------------------
 -- Helpers: safely call the underlying Blizzard APIs
 -- ---------------------------------------------------------------------------
 local function SafeGetSpellCooldown(spellID)
+    if addonRestricted or AreCooldownsSecret() or IsSpellCooldownSecret(spellID) then
+        return 0, 0, true, 1
+    end
     local ok, info = pcall(C_Spell.GetSpellCooldown, spellID)
     if ok and info then
         return info.startTime or 0, info.duration or 0, info.isEnabled, info.modRate or 1
@@ -24,6 +66,9 @@ local function SafeGetSpellCooldown(spellID)
 end
 
 local function SafeGetSpellCharges(spellID)
+    if addonRestricted or AreCooldownsSecret() then
+        return nil
+    end
     local ok, info = pcall(C_Spell.GetSpellCharges, spellID)
     if ok and info then
         return info.currentCharges, info.maxCharges, info.cooldownStartTime, info.cooldownDuration, info.chargeModRate
@@ -40,6 +85,9 @@ local function SafeGetSpellLossOfControlCooldown(spellID)
 end
 
 local function SafeIsSpellUsable(spellID)
+    if addonRestricted then
+        return false, false
+    end
     local ok, usable, noMana = pcall(C_Spell.IsSpellUsable, spellID)
     if ok then
         return usable, noMana
@@ -48,6 +96,10 @@ local function SafeIsSpellUsable(spellID)
 end
 
 local function SafeGetSpellBaseCooldown(spellID)
+    if C_Spell.GetSpellCooldownDuration then
+        local ok, duration = pcall(C_Spell.GetSpellCooldownDuration, spellID)
+        if ok and duration then return duration, 0, 0 end
+    end
     if GetSpellBaseCooldown then
         local ok, cd, gcd, icd = pcall(GetSpellBaseCooldown, spellID)
         if ok then return cd, gcd, icd end
@@ -106,14 +158,26 @@ eventFrame:RegisterEvent("SPELL_UPDATE_COOLDOWN")
 eventFrame:RegisterEvent("SPELL_UPDATE_CHARGES")
 eventFrame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+eventFrame:RegisterEvent("ADDON_RESTRICTION_STATE_CHANGED")
 eventFrame:SetScript("OnEvent", function(_, event, ...)
+    if event == "ADDON_RESTRICTION_STATE_CHANGED" then
+        UpdateRestrictionState()
+        -- Invalidate all cached entries when restriction state changes
+        for _, entry in pairs(spellStateCache) do
+            entry.lastUpdate = 0
+        end
+        return
+    end
+
     RefreshGCD()
 
     if event == "SPELL_UPDATE_COOLDOWN" or event == "SPELL_UPDATE_CHARGES" then
         -- Invalidate all cached entries so the next query re-fetches from the API
-        for id, entry in pairs(spellStateCache) do
+        for _, entry in pairs(spellStateCache) do
             entry.lastUpdate = 0
         end
+    elseif event == "PLAYER_ENTERING_WORLD" then
+        UpdateRestrictionState()
     end
 end)
 
@@ -188,4 +252,49 @@ end
 -- @return boolean
 function BCDMG:IsSpellStateAPIAvailable()
     return true
+end
+
+--- Check whether addon restrictions are currently active (12.0.0+).
+-- @return boolean
+function BCDMG:IsAddonRestricted()
+    return addonRestricted
+end
+
+--- Check whether a specific spell's cooldown is hidden by the Secret Values system.
+-- @param spellID number
+-- @return boolean
+function BCDMG:IsSpellCooldownSecret(spellID)
+    return IsSpellCooldownSecret(spellID)
+end
+
+--- Check whether cooldowns in general are hidden by the Secret Values system.
+-- @return boolean
+function BCDMG:AreCooldownsSecret()
+    return AreCooldownsSecret()
+end
+
+--- Returns action bar cooldown info via the new C_ActionBar API (12.0.0+).
+-- @param slot number  action bar slot
+-- @return startTime, duration, isEnabled, modRate
+function BCDMG:GetActionCooldown(slot)
+    if C_ActionBar and C_ActionBar.GetActionCooldown then
+        local ok, info = pcall(C_ActionBar.GetActionCooldown, slot)
+        if ok and info then
+            return info.startTime or 0, info.duration or 0, info.isEnabled, info.modRate or 1
+        end
+    end
+    return 0, 0, true, 1
+end
+
+--- Returns action bar charge info via the new C_ActionBar API (12.0.0+).
+-- @param slot number  action bar slot
+-- @return currentCharges, maxCharges, cooldownStartTime, cooldownDuration, chargeModRate
+function BCDMG:GetActionCharges(slot)
+    if C_ActionBar and C_ActionBar.GetActionCharges then
+        local ok, info = pcall(C_ActionBar.GetActionCharges, slot)
+        if ok and info then
+            return info.currentCharges, info.maxCharges, info.cooldownStartTime, info.cooldownDuration, info.chargeModRate
+        end
+    end
+    return nil
 end

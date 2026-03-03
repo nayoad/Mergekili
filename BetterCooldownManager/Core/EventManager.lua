@@ -7,12 +7,17 @@ function BCDM:SetupEventManager()
     BCDMEventManager:RegisterEvent("LOADING_SCREEN_DISABLED")
     BCDMEventManager:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
     BCDMEventManager:RegisterEvent("TRAIT_CONFIG_UPDATED")
+    BCDMEventManager:RegisterEvent("ADDON_RESTRICTION_STATE_CHANGED")
     BCDMEventManager:SetScript("OnEvent", function(_, event, ...)
         if InCombatLockdown() then return end
         if event == "PLAYER_SPECIALIZATION_CHANGED" then
             local unit = ...
             if unit ~= "player" then return end
             LEMO:ApplyChanges()
+            BCDM:UpdateBCDM()
+        elseif event == "ADDON_RESTRICTION_STATE_CHANGED" then
+            -- Restriction state change is handled by SpellStateAPI event frame;
+            -- trigger a UI refresh here.
             BCDM:UpdateBCDM()
         else
             BCDM:UpdateBCDM()

@@ -51,15 +51,14 @@ local GetSpellTabInfo = function( index )
 end
 
 local GetSpellInfo = ns.GetUnpackedSpellInfo
-local GetSpellCooldown = C_Spell.GetSpellCooldown
+local GetSpellCooldown = function( spellID )
+    return ns.BCDM_GetSpellCooldown( spellID )
+end
 
 local GetSpellDescription = C_Spell.GetSpellDescription
 
 local GetSpellCharges = function( spellID )
-    local spellChargeInfo = C_Spell.GetSpellCharges( spellID )
-    if spellChargeInfo then
-        return spellChargeInfo.currentCharges, spellChargeInfo.maxCharges, spellChargeInfo.cooldownStartTime, spellChargeInfo.cooldownDuration, spellChargeInfo.chargeModRate
-    end
+    return ns.BCDM_GetSpellCharges( spellID )
 end
 
 local GetSpecialization = C_SpecializationInfo.GetSpecialization
@@ -864,7 +863,7 @@ function SkeletonGen:EmbedSpellData( spellID, token, ability )
     local helpful = IsHelpfulSpell( name )
     local _, charges, _, recharge = GetSpellCharges( spellID )
 
-    local cooldown, gcd, icd = GetSpellBaseCooldown( spellID )
+    local cooldown, gcd, icd = ns.BCDM_GetSpellBaseCooldown( spellID )
     if cooldown then cooldown = cooldown / 1000 end
 
     if gcd == 1000 then gcd = "totem"

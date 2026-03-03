@@ -13,6 +13,7 @@
 embeds.xml
 
 Hekili.lua
+BetterCooldownManagerBridge.lua
 Utils.lua
 Formatting.lua
 MultilineEditor.lua

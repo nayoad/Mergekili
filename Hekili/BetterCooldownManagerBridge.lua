@@ -28,6 +28,7 @@ ns.BCDM_GetSpellCooldown = function(spellID)
     if info then
         return info.startTime, info.duration, info.isEnabled, info.modRate
     end
+    return 0, 0, true, 1
 end
 
 -- ---------------------------------------------------------------------------
@@ -54,6 +55,7 @@ ns.BCDM_GetSpellLossOfControlCooldown = function(spellID)
     if info then
         return info.startTime, info.duration
     end
+    return 0, 0
 end
 
 -- ---------------------------------------------------------------------------
